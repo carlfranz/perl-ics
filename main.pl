@@ -43,6 +43,8 @@ my $d2 = ${parse_date($to)};
 
 my $interval = from_dates($d1,$d2);
 
-print generate($interval,$customer);
+my @interval_filtered = grep { $_->day_of_week() < 6 } @{$interval};
+
+print generate(\@interval_filtered,$customer);
 
 1;
