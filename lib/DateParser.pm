@@ -23,10 +23,8 @@ sub parse_date {
     my $str = shift;
     my %parsed_date;
 
-    my $local_tz = DateTime::TimeZone->new( name => 'local' );
-
     if ( $str =~ qr/(\d{1,2})\/(\d{1,2})\/(\d{4})/mpsx ) {
-        %parsed_date = ( day => $1, month => $2, year => $3 );
+        %parsed_date = ( day => $1, month => $2, year => $3, time_zone => 'local' );
     }
     else {
         croak("Unable to parse date \"$str\"");

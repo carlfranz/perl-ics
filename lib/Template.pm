@@ -13,19 +13,31 @@ our $VERSION = 1.0;
 use base 'Exporter';
 our @EXPORT_OK = qw(
       generate
-      header
-      footer
 );
 
 
 sub generate {
+    my $dates_ref = shift;
+    my $customer = shift;
+    my $ret_val = header() . "\n";
+
+    foreach my $day (@{$dates_ref}) {
+        $ret_val = $ret_val . get_day($day, $customer) . "\n";
+    }
+
+    $ret_val = $ret_val . "\n" . footer() . "\n";
+
+    return $ret_val;
+}
+
+sub get_day {
     my $date  = shift;
     my $customer = shift;
 
-    my $am_start = $date->clone()->set({hour => 9, minute => 0});
-    my $am_end = $date->clone()->set({hour => 13, minute => 0});
-    my $pm_start = $date->clone()->set({hour => 14, minute => 0});
-    my $pm_end = $date->clone()->set({hour => 18, minute => 0});;
+    my $am_start = fmt_date( $date->clone()->set({hour => 9, minute => 0}));
+    my $am_end = fmt_date( $date->clone()->set({hour => 13, minute => 0}));
+    my $pm_start = fmt_date( $date->clone()->set({hour => 14, minute => 0}));
+    my $pm_end = fmt_date( $date->clone()->set({hour => 18, minute => 0}));
     
     my $event = qq|BEGIN:VEVENT\n|;
     $event = qq|${event}DTSTART:${am_start}\n|;
@@ -38,7 +50,7 @@ sub generate {
     $event = qq|${event}SUMMARY:${customer}\n|;
     $event = qq|${event}END:VEVENT|;
 
-    return \$event;
+    return $event;
 }
 
 
@@ -51,5 +63,10 @@ sub header {
 sub footer {
     my $footer = 'END:VCALENDAR';
     return $footer;
+}
+
+sub fmt_date {
+    my $date = shift;
+    return $date->strftime("%Y%m%dT%H%M%S");
 }
 1;

@@ -16,12 +16,33 @@ my $from = DateTime->new(
     year       => 1966,
     month      => 10,
     day        => 25,
+    time_zone  => 'Europe/Rome',
 );
 
+my @par = ();
+push @par, $from;
 
-my $output_ref = generate($from, 'foo');
+my $result = generate(\@par, 'foo');
 
-my $result = ${$output_ref};
+print Dumper $result;
+
+my $expected = '';
+$expected = qq|${expected}BEGIN:VCALENDAR\nVERSION:2.0\n|;
+$expected = qq|${expected}PRODID:-//hacksw/handcal//NONSGML v1.0//EN\n|;
+$expected = qq|${expected}BEGIN:VEVENT\n|;
+$expected = qq|${expected}DTSTART:19661025T090000\n|;
+$expected = qq|${expected}DTEND:19661025T130000\n|;
+$expected = qq|${expected}SUMMARY:foo\n|;
+$expected = qq|${expected}END:VEVENT\nBEGIN:VEVENT\n|;
+$expected = qq|${expected}DTSTART:19661025T140000\n|;
+$expected = qq|${expected}DTEND:19661025T180000\n|;
+$expected = qq|${expected}SUMMARY:foo\n|;
+$expected = qq|${expected}END:VEVENT\n|;
+$expected = qq|${expected}END:VCALENDAR\n|;
+
+ok($result eq $expected);
+
+1;
 
 # BEGIN:VCALENDAR
 # VERSION:2.0
@@ -32,19 +53,3 @@ my $result = ${$output_ref};
 # SUMMARY:customerkik91
 # END:VEVENT
 # END:VCALENDAR
-
-
-my $expected = qq|BEGIN:VEVENT\n|;
-$expected = qq|${expected}DTSTART:1966-10-25T09:00:00\n|;
-$expected = qq|${expected}DTEND:1966-10-25T13:00:00\n|;
-$expected = qq|${expected}SUMMARY:foo\n|;
-$expected = qq|${expected}END:VEVENT\nBEGIN:VEVENT\n|;
-$expected = qq|${expected}DTSTART:1966-10-25T14:00:00\n|;
-$expected = qq|${expected}DTEND:1966-10-25T18:00:00\n|;
-$expected = qq|${expected}SUMMARY:foo\n|;
-$expected = qq|${expected}END:VEVENT|;
-
-
-ok($result eq $expected);
-
-1;

@@ -18,8 +18,6 @@ use Interval qw(
 
 use Template qw(
   generate
-  header
-  footer
 );
 
 our $VERSION = 1.0.0;
@@ -45,15 +43,6 @@ my $d2 = ${parse_date($to)};
 
 my $interval = from_dates($d1,$d2);
 
-my $header = header();
-my $footer = footer();
-
-my $output = qq|${header}\n|;
-foreach my $day (@{$interval}) {
-    my $ics_ref = ${generate($day,$customer)};
-    $output = qq|${output}${ics_ref}|;
-}
-$output = qq|${output}${footer}\n|;
-print $output;
+print generate($interval,$customer);
 
 1;
