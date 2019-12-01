@@ -19,8 +19,7 @@ my $expected = DateTime->new(
     hour       => 0,
     minute     => 0,
     second     => 0,
-    nanosecond => 0,
-    time_zone  => 'Europe/Rome',
+    nanosecond => 0
 );
 my $ret_val = parse_date('25/10/1966');
 my $result = ${$ret_val};
