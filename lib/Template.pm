@@ -13,6 +13,8 @@ our $VERSION = 1.0;
 use base 'Exporter';
 our @EXPORT_OK = qw(
       generate
+      header
+      footer
 );
 
 
