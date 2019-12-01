@@ -5,6 +5,7 @@ use 5.010;
 
 use strict;
 use warnings;
+use DateTime;
 use Data::Dumper;
 use Carp;
 
@@ -27,8 +28,7 @@ sub from_dates {
     my $duration = $end->delta_days($start);  # DateTime::Duration
 
     my $d1 = $start->clone();
-    while ( $duration->in_units('days') > 0 ) {
-        
+    while ( $duration->is_positive()) {        
         $duration = $end->subtract_datetime($d1); # returns a new DateTime
         push @retval, $d1;
         $d1 = $d1->clone()->add( days => 1 );
