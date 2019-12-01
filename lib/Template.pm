@@ -25,7 +25,7 @@ sub generate {
         $ret_val = $ret_val . get_day($day, $customer) . "\n";
     }
 
-    $ret_val = $ret_val . "\n" . footer() . "\n";
+    $ret_val = $ret_val . footer() . "\n";
 
     return $ret_val;
 }
